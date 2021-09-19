@@ -68,7 +68,7 @@
 			fetchPokemon(7)
         </script>
 	</head>
-	<form class="browser">
+	<form class="browser" onKeypress="if(event.keyCode == 13) event.returnValue = false;">
 		<label for="namePokemon">Name or Numer of Pokemon:</label>
 		<input type="text" id="fname" name="fname">
 		<input type="button" value="Search" onclick="SearchPokemon();">
