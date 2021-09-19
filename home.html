@@ -62,7 +62,7 @@
   				return word[0].toUpperCase() + word.slice(1);
 			}
 			const SearchPokemon= () =>{
-				const poke = document.getElementById("fname").value
+				const poke = document.getElementById("fname").value.toLowerCase() 
 				fetchPokemon(poke)
 			}
 			fetchPokemon(7)
