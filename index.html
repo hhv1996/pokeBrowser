@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<title>PokeBrowser</title>
+		<script type="text/javascript">
+			const fetchPokemon = async (id) => {
+				try{
+					console.log(id)
+					const res = await fetch (`https://pokeapi.co/api/v2/pokemon/${id}`)
+					if(res.status!=404){
+						const pokemons = await res.json()
+						const pokemon ={
+							name: pokemons.name,
+							img: pokemons.sprites.other.dream_world.front_default,
+							hp: pokemons.stats[0].base_stat ,
+							attack:pokemons.stats[1].base_stat ,
+							defense: pokemons.stats[2].base_stat,
+							abilityName: pokemons.abilities[0].ability.name,
+							abilityDescription: await fetchAbility(pokemons.abilities[0].ability.url)
+						}
+						filldata(pokemon)
+						console.log(pokemon)
+					}else{
+						window.alert("Pokemon no encontrado, intente de nuevo");
+					}
+
+				}catch{
+					console.log(error)
+				}
+			}
+			const filldata = (pokemon) => {
+				const name = document.getElementById("name")
+				const photo = document.getElementById("photo")
+				const hp = document.getElementById("hp")
+				const attack = document.getElementById("attack")
+				const defense = document.getElementById("defense")
+				const abilityName = document.getElementById("abilityName")
+				const abilityDescription = document.getElementById("description")
+				
+				name.innerHTML=capitalize(pokemon.name)
+				photo.src = pokemon.img
+				hp.innerHTML=pokemon.hp
+				attack.innerHTML=pokemon.attack
+				defense.innerHTML=pokemon.defense
+				abilityName.innerHTML="Ability: " + capitalize(pokemon.abilityName)
+				abilityDescription.innerHTML=capitalize(pokemon.abilityDescription)
+
+			}
+			const fetchAbility = async (id) => {
+				let ab=""
+				try{
+					const res = await fetch (id)
+					const ability = await res.json()
+					ab = ability.effect_entries[1].effect
+					console.log(ability)
+				}catch{
+					console.log(error)
+				}
+				return ab
+			}
+			const capitalize= (word) =>{
+  				return word[0].toUpperCase() + word.slice(1);
+			}
+			const SearchPokemon= () =>{
+				const poke = document.getElementById("fname").value
+				fetchPokemon(poke)
+			}
+			fetchPokemon(7)
+        </script>
+	</head>
+	<form class="browser">
+		<label for="namePokemon">Name or Numer of Pokemon:</label>
+		<input type="text" id="fname" name="fname">
+		<input type="button" value="Search" onclick="SearchPokemon();">
+	</form>
+	<div class="card">	
+		<div class="header">
+			<img src="" class="photo" id="photo">
+			<h1 id="name"></h1>
+		</div>
+		<div class="footer">
+			<div class="footer-info">
+				<h3 id="hp"></h3>
+				<p>HP</p>
+			</div>
+			<div class="footer-info">
+				<h3 id="attack"></h3>
+				<p>Attack</p>
+			</div>
+			<div class="footer-info">
+				<h3 id="defense"></h3>
+				<p>Defense</p>
+			</div>
+		</div>
+		<div>
+			<div class="footer-info">
+				<h3 id="abilityName"></h3>
+			</div>
+		</div>
+		<div class="footer">
+			<div class="footer-info">
+				<p>Description</p>
+				<h3 id="description"></h3>
+			</div>
+		</div>
+	</div>
+	<style>
+		.card {
+			background-color: #f8f8f8;
+			border-radius: 25px;
+			height: auto ;
+			width: 350px ;
+		}
+		.photo {
+  			max-width: 40%;
+			display:block;
+			margin:auto;
+		}
+		.header{
+			background-color: #214851;
+			padding-top: 20px;
+			padding-bottom: 20px;
+			border-top-left-radius: 25px;
+			border-top-right-radius: 25px;
+			height: 37% ;
+			width: auto ;
+		}
+		.header > h1{
+			text-align: center;
+			color: #f8f8f8;
+		}
+		.footer {
+			display: flex;
+			-ms-flex-pack: distribute;
+			justify-content: space-around;
+		}
+		.footer-info {
+  			text-align: center;
+			color: #7e7d76;
+		}
+		.browser {
+			color: honeydew;
+			background-color: #574a7a;
+			margin-bottom: 5px;
+			border-radius: 25px;
+			height: auto ;
+			width: 350px ;
+			text-align: center;
+			padding-bottom: 5px;
+			padding-top: 5px;
+		}
+
+
+	</style>
+</html>
